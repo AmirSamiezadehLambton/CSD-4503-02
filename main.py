@@ -1,4 +1,4 @@
-print("Hello World")
+from app import app
 
-def print_version(version_number):
-  print(version_number)
+
+app.run(host="0.0.0.0", port=5000)
