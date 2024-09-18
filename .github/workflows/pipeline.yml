@@ -1,0 +1,16 @@
+
+
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+  # Stage 1: Build
+  build_job_1:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo Build Flask App
+        run: echo "Building the docker image..."
