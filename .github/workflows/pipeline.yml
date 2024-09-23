@@ -1,5 +1,3 @@
-
-
 on:
   push:
     branches:
@@ -10,7 +8,18 @@ jobs:
   # Stage 1: Build
   build_job_1:
     name: Build Docker Image
-    runs-on: ubuntu-latest
+    runs-on: csd-windows-local  # self-hosted runner
     steps:
-      - name: Echo Build Flask App
-        run: echo "Building the docker image..."
+      - name: Clone and checkout to the repository
+        uses: actions/checkout@v2  # Clones the repository in the working directory of the runner
+
+      - name: Build Flask App Image
+        run: docker build -t flask-app-2:v1.0.0 -f Dockerfile  .
+
+  # Stage 2: Deploy
+  deploy_job:
+    name: Deploy the Docker Image
+    runs-on: csd-windows-local  # self-hosted runner
+    steps:
+      - name: Deploy image
+        run: docker run -d -p 5000:5000 flask-app-2:v1.0.0  # -d runs the container in the background
