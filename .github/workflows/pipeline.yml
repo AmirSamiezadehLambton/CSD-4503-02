@@ -40,7 +40,7 @@ jobs:
   deploy_job:
     name: Deploy the Docker Image
     runs-on: csd-windows-local  # self-hosted runner
-    needs: [build-job, test-job]
+    needs: [build_job, test_job]
     steps:
       - name: Deploy image
         run: docker run -d -p 5000:5000 flask-app-2:v1.0.0  # -d runs the container in the background
