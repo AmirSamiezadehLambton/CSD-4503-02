@@ -6,7 +6,7 @@ on:
 
 jobs:
   # Stage 1: Build
-  build_job_1:
+  build_job:
     name: Build Docker Image
     runs-on: csd-windows-local  # self-hosted runner
     steps:
@@ -16,10 +16,31 @@ jobs:
       - name: Build Flask App Image
         run: docker build -t flask-app-2:v1.0.0 -f Dockerfile  .
 
+  test_job:
+    name: Testing the Flask Application
+    runs-on: csd-windows-local  # self-hosted runner
+    needs: [build_job]
+
+    steps:
+      - name: Clone and checkout to the repository
+        uses: actions/checkout@v2  # Clones the repository in the working directory of the runner
+
+      - name: Set up a virtual environment
+        run: |
+          python -m venv venv  # Create a virtual environment in the venv folder
+          venv/Scripts/activate  # Activate the virtual environment
+          pip install -r requirements.txt  # Install dependencies
+
+      - name: Run unit tests inside the virtual environment
+        run: |
+           venv/Scripts/activate  # Activate the virtual environment
+           pytest tests/  --maxfail=1  # Run the tests inside the venv 
+
   # Stage 2: Deploy
   deploy_job:
     name: Deploy the Docker Image
     runs-on: csd-windows-local  # self-hosted runner
+    needs: [build-job, test-job]
     steps:
       - name: Deploy image
         run: docker run -d -p 5000:5000 flask-app-2:v1.0.0  # -d runs the container in the background
