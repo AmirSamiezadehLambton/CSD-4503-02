@@ -36,7 +36,7 @@ jobs:
            venv/Scripts/activate  # Activate the virtual environment
            pytest tests/  --maxfail=1  # Run the tests inside the venv 
 
-  # Stage 2: Deploy
+  # Stage 3: Deploy
   deploy_job:
     name: Deploy the Docker Image
     runs-on: csd-windows-local  # self-hosted runner

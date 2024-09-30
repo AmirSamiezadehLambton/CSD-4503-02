@@ -27,10 +27,16 @@ products = [
     #     "price": 19.99,
     #     "tag": "Best Seller"
     # }
+    # {
+    #     "name": "Product 4",
+    #     "image": "/static/images/product4.jpg",
+    #     "price": 9.99,
+    #     "tag": "Black Friday"
+    # },
     {
-        "name": "Product 4",
-        "image": "/static/images/product4.jpg",
-        "price": 9.99,
+        "name": "Product 5",
+        "image": "/static/images/product5.jpg",
+        "price": 69.99,
         "tag": "Black Friday"
     }
 ]
