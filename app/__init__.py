@@ -12,7 +12,6 @@ load_dotenv()
 db_username = os.environ["MONGODB_USERNAME"]
 db_password = os.environ["MONGODB_PASSWORD"]
 
-print(db_username)
 app = Flask(__name__)
 
 # MongoDB Atlas Client
