@@ -3,18 +3,34 @@ on:
     branches:
       - main
 
+# global variable
+env:
+  DOCKERHUB_USERNAME: csd4503  # replace this with your dockerhub username
+  DOCKERHUB_REPOSITORY: flask  # replace this with your dockerhub repository name
+  IMAGE_VERSION: v1.0.0
 
 jobs:
   # Stage 1: Build
   build_job:
     name: Build Docker Image
     runs-on: aws-self-hosted  # self-hosted runner
+    environment: development
     steps:
       - name: Clone and checkout to the repository
         uses: actions/checkout@v2  # Clones the repository in the working directory of the runner
 
+      # This action allows us to authenticate with DockerHub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
       - name: Build Flask App Image
-        run: docker build -t flask-app-2:v1.0.0 -f Dockerfile  .
+        run: docker build -t $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:$IMAGE_VERSION -f Dockerfile  .
+
+      - name: Push Flask Image to DockerHub
+        run: docker push $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:$IMAGE_VERSION
 
 #  test_job:
 #    name: Testing the Flask Application
@@ -36,12 +52,12 @@ jobs:
 #           venv/Scripts/activate  # Activate the virtual environment
 #           pytest tests/  --maxfail=1  # Run the tests inside the venv
 
-  # Stage 3: Deploy
-  deploy_job:
-    name: Deploy the Docker Image
-    runs-on: aws-self-hosted  # self-hosted runner
-    environment: development  # define the environment to access its secrets
-    needs: [build_job]
-    steps:
-      - name: Deploy image
-        run: docker run -d -p 5000:5000 -e MONGODB_USERNAME=${{ secrets.MONGODB_USERNAME }} -e MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }}  flask-app-2:v1.0.0  # -d runs the container in the background
+#  # Stage 3: Deploy
+#  deploy_job:
+#    name: Deploy the Docker Image
+#    runs-on: aws-self-hosted  # self-hosted runner
+#    environment: development  # define the environment to access its secrets
+#    needs: [build_job]
+#    steps:
+#      - name: Deploy image
+#        run: docker run -d -p 5000:5000 -e MONGODB_USERNAME=${{ secrets.MONGODB_USERNAME }} -e MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }}  flask-app-2:v1.0.0  # -d runs the container in the background
