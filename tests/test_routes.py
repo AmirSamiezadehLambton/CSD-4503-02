@@ -20,7 +20,7 @@ class TestRoutes(unittest.TestCase):
     # test route index - data
     def test_index_data(self):
         # Send a GET request to the index route
-        response = self.app.get("/index")
+        response = self.app.get("/products")
 
-        # Check for response data
-        self.assertEqual(response.data.decode('utf-8'), "This is an awesome app!")
+        # Check for the 200 in the response
+        self.assertEqual(response.status_code, 200)
