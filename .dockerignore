@@ -1,0 +1,4 @@
+# dockerignore allows us to ignore files to be copied into docker image
+*.env
+tests/
+add_data_mongodb.py
