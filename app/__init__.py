@@ -6,12 +6,24 @@ from flask import Flask
 from pymongo import MongoClient  # pip install pymongo
 from dotenv import load_dotenv
 import os
+import sentry_sdk
 
 load_dotenv()
 
 db_username = os.environ["MONGODB_USERNAME"]
 db_password = os.environ["MONGODB_PASSWORD"]
+sentry_dsn = os.environ["SENTRY_DSN"]
 
+sentry_sdk.init(
+    dsn=sentry_dsn,
+    traces_sample_rate=1.0,
+    _experiments={
+        # Set continuous_profiling_auto_start to True
+        # to automatically start the profiler on when
+        # possible.
+        "continuous_profiling_auto_start": True,
+    },
+)
 app = Flask(__name__)
 
 # MongoDB Atlas Client

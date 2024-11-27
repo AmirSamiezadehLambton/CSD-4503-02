@@ -7,7 +7,7 @@ FROM python:3.9-alpine
 # Define the working directory
 WORKDIR /
 
-# Copy the files from the project to the image
+# Copy the files from the project to t*.he image
 # COPY <local_files> <image_files>
 COPY . .
 
